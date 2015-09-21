@@ -4,5 +4,6 @@
   "httpoison": {:hex, :httpoison, "0.7.3"},
   "idna": {:hex, :idna, "1.0.2"},
   "pipe": {:hex, :pipe, "0.0.2"},
+  "remix": {:hex, :remix, "0.0.1"},
   "sqlitex": {:hex, :sqlitex, "0.8.1"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"}}

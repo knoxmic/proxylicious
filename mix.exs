@@ -14,8 +14,11 @@ defmodule Proxylicious.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:logger, :httpoison]]
+    [applications: applications(Mix.env)]
   end
+
+  defp applications(:dev), do: applications(:all) ++ [:remix]
+  defp applications(_all), do: [:logger, :httpoison]
 
   # Dependencies can be Hex packages:
   #
@@ -30,6 +33,7 @@ defmodule Proxylicious.Mixfile do
     [
       {:sqlitex, "~> 0.8.1"},
       {:httpoison, "~> 0.7.2"},
+      {:remix, "~> 0.0.1", only: :dev},
     ]
   end
 end
