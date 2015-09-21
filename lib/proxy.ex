@@ -1,37 +1,36 @@
 require IEx
 
 defmodule Proxy do
+  use Ecto.Model
 
-  def raw_list do
-    filename = Helper.Config.get(:source, :proxy_file)
-    Helper.File.lines_as_list(filename)
+  schema "requests" do
+    field :proxy
+    field :ok, :integer
+    field :error, :integer
+    field :last_ok, Ecto.DateTime
+    field :last_error, Ecto.DateTime
   end
 
-  def check(proxy) do
-    url = Helper.Config.get(:check, :url)
-    http_status_code = Helper.Config.get(:check, :http_status_code)
+  def add(:ok, proxy) do
+    _add(1, proxy)
+  end
 
-    IO.puts("#{proxy} -> #{url}")
-    case HTTPoison.get(url, [], [{:proxy, proxy}]) do
-      {:ok, %HTTPoison.Response{status_code: http_status_code, headers: headers}} ->
-        {:ok}
-      {:error, error} ->
-        {:error}
+  def add(:error, proxy) do
+    _add(0, proxy)
+  end
+
+  def _add(status, proxy) do
+    case status do
+      1 -> proxy = %Proxy{proxy: proxy, ok: 1, error: 0, last_ok: Ecto.DateTime.utc}
+      0 -> proxy = %Proxy{proxy: proxy, ok: 0, error: 1, last_error: Ecto.DateTime.utc}
     end
+    Repo.insert!(proxy)
+
+    {:ok}
   end
 
-  def register(:ok, proxy) do
-    Sqlitex.with_db(Helper.Config.get(:db, :file), fn(db) ->
-      Sqlitex.query(db, "INSERT INTO proxies (proxy, ok_count, last_ok) VALUES (:1, :2, :3);", [bind: [proxy, 1, "DATETIME('now')"]])
-    end)
-    IO.puts("ok: #{proxy}")
-  end
-
-  def register(:error, proxy) do
-    Sqlitex.with_db(Helper.Config.get(:db, :file), fn(db) ->
-      Sqlitex.query(db, "INSERT INTO proxies (proxy, error_count, last_error) VALUES (:1, :2, :3);", [bind: [proxy, 1, "DATETIME('now')"]])
-    end)
-    IO.puts("error: #{proxy}")
+  def clear do
+    Repo.delete_all(Proxy)  
   end
 
 end

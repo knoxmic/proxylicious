@@ -1,9 +1,10 @@
 # config/dev.exs
 use Mix.Config
 
-config :db,
-  file: "db/proxies.sqlite3"
-  # create table proxies(proxy varchar(255), ok_count int default 0, error_count int default 0, last_ok datetime, last_error datetime);
+config :proxylicious, Repo,
+  adapter: Sqlite.Ecto,
+  database: "db/proxies.sqlite3"
+  # create table requests(id integer, proxy varchar(255), ok int default 0, error int default 0, last_ok datetime, last_error datetime);
 
 config :source,
   proxy_file: "static/proxies.txt"
