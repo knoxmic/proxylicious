@@ -1,5 +1,3 @@
-require IEx
-
 defmodule Helper.File do
 
   def lines_as_list(filename) do
