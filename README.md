@@ -11,6 +11,6 @@ Test your proxy list for reliability.
 ## Usage
 
 ```iex
-iex> Proxylicious.check
-iex> Proxylicious.get_reliable_proxies(2)
+iex> Proxylicious.run
+iex> Proxylicious.get(2)
 ```
