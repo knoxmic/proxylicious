@@ -1,5 +1,3 @@
-require IEx
-
 defmodule Helper.Config do
 
   def get(region, key) do
