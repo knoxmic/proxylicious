@@ -18,7 +18,7 @@ defmodule Proxylicious.Mixfile do
   end
 
   defp applications(:dev), do: applications(:all) ++ [:remix]
-  defp applications(_all), do: [:logger, :httpoison]
+  defp applications(_all), do: [:logger, :httpoison, :sqlite_ecto, :ecto]
 
   # Dependencies can be Hex packages:
   #
@@ -31,7 +31,8 @@ defmodule Proxylicious.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
-      {:sqlitex, "~> 0.8.1"},
+      {:ecto, "~> 1.0.3"},
+      {:sqlite_ecto, "~> 1.0.2"},
       {:httpoison, "~> 0.7.2"},
       {:remix, "~> 0.0.1", only: :dev},
     ]
