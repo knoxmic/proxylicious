@@ -24,13 +24,17 @@ defmodule Proxy do
       1 -> proxy = %Proxy{proxy: proxy, ok: 1, error: 0, last_ok: Ecto.DateTime.utc}
       0 -> proxy = %Proxy{proxy: proxy, ok: 0, error: 1, last_error: Ecto.DateTime.utc}
     end
-    Repo.insert!(proxy)
+    Repo.transaction(fn ->
+      Repo.insert!(proxy)
+    end)
 
     {:ok}
   end
 
   def clear do
-    Repo.delete_all(Proxy)  
+    Repo.transaction(fn ->
+      Repo.delete_all(Proxy)
+    end)
   end
 
 end
