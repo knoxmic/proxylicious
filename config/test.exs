@@ -5,9 +5,11 @@ config :proxylicious, Repo,
   adapter: Sqlite.Ecto,
   database: "test/db/proxies.sqlite3"
 
-config :source,
-  proxy_file: "test/fixtures/proxies.txt"
+config :proxylicious_data,
+  db: "test/db/proxies.sqlite3",
+  proxies: "test/fixtures/proxies.txt"
 
-config :check,
+config :proxylicious_check,
   url: "http://...",
-  http_status_code: 200
+  status_code: 200, # 301
+  timeout: 5000 # ms
